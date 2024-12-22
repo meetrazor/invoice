@@ -37,7 +37,7 @@ export class UserController {
     }
     const token = this.jwtService.sign(
       { userId: user.id, email: user.email },
-      { secret: 'test' }
+      { secret: process.env.JWT_SECRET }
     );
     await this.userService.saveToken(user.id, token);
     return { message: 'Login successful', token };
