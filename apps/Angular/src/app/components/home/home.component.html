@@ -1,0 +1,57 @@
+<div class="grid h-screen">
+  <!-- Header -->
+  <div
+    class="col-12 bg-primary text-white p-3 flex align-items-center justify-content-between lg:col-span-12 lg:sticky lg:top-0 z-5"
+    style="height: 80px"
+  >
+    <button
+      pButton
+      class="p-button-text text-white lg:hidden"
+      icon="pi pi-bars"
+      (click)="toggleSidebar()"
+    >
+      <span></span>
+    </button>
+    <h1 class="m-0">Dashboard</h1>
+
+    <button
+      pButton
+      icon="pi pi-sign-out"
+      class="p-button-text text-white"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <div
+    class="bg-gray-200 main-content-page p-3 transition-transform duration-300 lg:col-2 md:col-3 col-6 lg:static absolute lg:translate-x-0 z-4"
+    [ngClass]="{
+      'translate-x-0': sidebarVisible,
+      '-translate-x-full': !sidebarVisible
+    }"
+    [style.top.px]="80"
+  >
+    <ul class="list-none p-0 m-0">
+      <li class="p-3 hover:bg-primary hover:text-white cursor-pointer">
+        <i class="pi pi-home mr-2"></i>
+        <span>Home</span>
+      </li>
+      <!-- Add other links as needed -->
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div
+    class="col-12 lg:col-10 p-3 lg:ml-auto main-content-page"
+    [ngClass]="{ 'ml-0': sidebarVisible, 'ml-auto': !sidebarVisible }"
+  >
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+  <div class="col-12 bg-gray-300 text-center p-3 z-4">
+    <p class="m-0">&copy; 2024 Company</p>
+  </div>
+</div>

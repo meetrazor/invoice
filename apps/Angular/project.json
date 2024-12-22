@@ -80,6 +80,13 @@
         "jestConfig": "apps/Angular/jest.config.ts"
       }
     },
+    "with-api": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx serve Angular", "nx serve Nest"],
+        "parallel": true
+      }
+    },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {

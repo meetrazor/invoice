@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'primeflex/primeflex.css';
+@import 'primeicons/primeicons.css';
+
+html,
+body,
+p,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+app-root {
+  height: 99vh;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.h-screen {
+  height: 99vh !important;
+}

@@ -1,0 +1,261 @@
+<p-card styleClass="invoice-card">
+  <form [formGroup]="invoiceForm" *ngIf="!loading">
+    <!-- From Details -->
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-6">
+        <h3 class="form-section-title">From Details</h3>
+        <div class="field h-4rem">
+          <label for="fromName">Name</label>
+          <input
+            pInputText
+            id="fromName"
+            formControlName="fromName"
+            placeholder="Enter your name"
+          />
+          <p-message
+            *ngIf=" invoiceForm.get('fromName')?.invalid && invoiceForm.get('fromName')?.touched && invoiceForm.get('fromName')?.errors?.['required']"
+            severity="error"
+            variant="simple"
+            >Name is required.</p-message
+          >
+        </div>
+        <div class="field h-4rem">
+          <label for="fromAddress">Address</label>
+          <input
+            pInputText
+            id="fromAddress"
+            formControlName="fromAddress"
+            placeholder="Enter your address"
+          />
+          <p-message
+            *ngIf=" invoiceForm.get('fromAddress')?.invalid && invoiceForm.get('fromAddress')?.touched && invoiceForm.get('fromAddress')?.errors?.['required']"
+            severity="error"
+            variant="simple"
+            >Address is required.</p-message
+          >
+        </div>
+      </div>
+
+      <!-- To Details -->
+      <div class="col-12 md:col-6">
+        <h3 class="form-section-title">To Details</h3>
+        <div class="field h-4rem">
+          <label for="toName">Name</label>
+          <input
+            pInputText
+            id="toName"
+            formControlName="toName"
+            placeholder="Enter recipient's name"
+          />
+          <p-message
+            *ngIf=" invoiceForm.get('toName')?.invalid && invoiceForm.get('toName')?.touched && invoiceForm.get('toName')?.errors?.['required']"
+            severity="error"
+            variant="simple"
+            >Name is required.</p-message
+          >
+        </div>
+        <div class="field h-4rem">
+          <label for="toAddress">Address</label>
+          <input
+            pInputText
+            id="toAddress"
+            formControlName="toAddress"
+            placeholder="Enter recipient's address"
+          />
+          <p-message
+            *ngIf=" invoiceForm.get('toAddress')?.invalid && invoiceForm.get('toAddress')?.touched && invoiceForm.get('toAddress')?.errors?.['required']"
+            severity="error"
+            variant="simple"
+            >Address is required.</p-message
+          >
+        </div>
+      </div>
+    </div>
+    <div class="field h-4rem">
+      <label for="invoiceDate">Invoice Date</label>
+      <br />
+      <p-datepicker
+        id="invoiceDate"
+        formControlName="invoiceDate"
+        placeholder="DD/MM/YYYY"
+        dateFormat="dd/mm/yy"
+        class="w-full"
+      ></p-datepicker>
+      <p-message
+        *ngIf=" invoiceForm.get('invoiceDate')?.invalid && invoiceForm.get('invoiceDate')?.touched && invoiceForm.get('invoiceDate')?.errors?.['required']"
+        severity="error"
+        variant="simple"
+        >Date is required.</p-message
+      >
+    </div>
+
+    <!-- Item Details -->
+    <h3 class="form-section-title">Item Details</h3>
+    <div class="hidden md:block">
+      <div class="grid align-items-center">
+        <div class="md:col-3">
+          <label for="itemName">Name</label>
+        </div>
+        <div class="md:col-3">
+          <label for="quantity">Quantity</label>
+        </div>
+        <div class="md:col-3">
+          <label for="rate">Rate</label>
+        </div>
+        <div class="md:col-2">
+          <label for="total">Total</label>
+        </div>
+      </div>
+    </div>
+    <div formArrayName="items">
+      <div
+        *ngFor="let item of items.controls; let i = index"
+        [formGroupName]="i"
+        class="grid align-items-top min-h-5rem"
+      >
+        <div class="col-12 md:col-3">
+          <div class="block md:hidden">
+            <label for="itemName">Name</label>
+          </div>
+          <input
+            pInputText
+            id="itemName"
+            class="max-w-full"
+            placeholder="Item Name"
+            formControlName="itemName"
+          />
+          <p-message
+            *ngIf="getError(i, 'itemName', 'required')"
+            severity="error"
+            variant="simple"
+          >
+            Name is required.</p-message
+          >
+        </div>
+        <div class="col-12 md:col-3">
+          <div class="block md:hidden">
+            <label for="quantity">Quantity</label>
+          </div>
+          <input
+            pInputText
+            id="quantity"
+            class="max-w-full"
+            type="number"
+            placeholder="Qty"
+            formControlName="quantity"
+            (input)="calculateTotal(i)"
+          />
+          <p-message
+            *ngIf="getError(i, 'quantity', 'required')"
+            severity="error"
+            variant="simple"
+          >
+            Qty is required.</p-message
+          >
+          <p-message
+            *ngIf="getError(i, 'quantity', 'min')"
+            severity="error"
+            variant="simple"
+          >
+            Minimum Quantity is 1.</p-message
+          >
+        </div>
+        <div class="col-12 md:col-3">
+          <div class="block md:hidden">
+            <label for="rate">Rate</label>
+          </div>
+          <input
+            pInputText
+            id="rate"
+            type="number"
+            class="max-w-full"
+            placeholder="Rate"
+            formControlName="rate"
+            (input)="calculateTotal(i)"
+          />
+          <p-message
+            *ngIf="getError(i, 'rate', 'required')"
+            severity="error"
+            variant="simple"
+          >
+            Rate is required.</p-message
+          >
+          <p-message
+            *ngIf="getError(i, 'rate', 'min')"
+            severity="error"
+            variant="simple"
+          >
+            Minimum Rate is 0.</p-message
+          >
+        </div>
+        <div class="col-12 md:col-2">
+          <div class="block md:hidden">
+            <label for="toal">Total</label>
+          </div>
+          <input
+            pInputText
+            id="toal"
+            type="number"
+            class="max-w-full disabled"
+            placeholder="Total"
+            formControlName="total"
+            readonly
+          />
+        </div>
+        <div class="col-12 md:col-1">
+          <button
+            *ngIf="items.controls.length > 1 && mode !== 'View'"
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-danger"
+            (click)="removeItem(i)"
+          >
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <button
+        pButton
+        *ngIf="mode !== 'View'"
+        type="button"
+        icon="pi pi-plus"
+        class="p-button-outlined"
+        (click)="addItem()"
+      >
+        Add
+      </button>
+    </div>
+    <div *ngIf="mode === 'View'">
+      <h3 class="form-section-title">Invoice Total</h3>
+      <input
+        pInputText
+        id="invoiceTotal"
+        [value]="invoice?.totalAmount"
+        readonly
+        disabled
+      />
+    </div>
+    <!-- Submit Button -->
+    <div class="form-footer justify-content-between">
+      <button
+        *ngIf="mode === 'Create'"
+        pButton
+        class="button-success"
+        (click)="onSubmit()"
+      >
+        Create
+      </button>
+      <button
+        *ngIf="mode === 'Update'"
+        pButton
+        class="button-success"
+        (click)="onEdit()"
+      >
+        Edit
+      </button>
+      <button pButton severity="danger" (click)="close()">Close</button>
+    </div>
+  </form>
+</p-card>

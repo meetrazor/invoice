@@ -1,0 +1,136 @@
+<div class="card flex justify-center">
+  <p-breadcrumb class="max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-primary font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <a [href]="item.url">
+          <span class="text-color">{{ item.label }}</span>
+        </a>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+
+<div class="card">
+  <p-toolbar styleClass="mb-3">
+    <ng-template #start>
+      <p-button
+        label="New"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew('Create')"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [filterDelay]="0"
+    [value]="filterInvoices"
+    [rows]="10"
+    [paginator]="true"
+    [lazy]="true"
+    [totalRecords]="totalRecords"
+    [sortField]="sortField"
+    [sortOrder]="sortOrder"
+    [responsive]="true"
+    [loading]="loading"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    (onSort)="load($event)"
+  >
+    <ng-template #caption>
+      <div class="flex align-items-center justify-content-between">
+        <h4 class="m-0">Manage Invoice</h4>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            [(ngModel)]="searchTerm"
+            pInputText
+            type="text"
+            placeholder="Search..."
+            (input)="filterTable()"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th id="invoiceId" pSortableColumn="id" class="min-w-10rem">
+          Invoice Number <p-sortIcon field="id" />
+        </th>
+        <th id="date" pSortableColumn="invoiceDate" class="min-w-10rem">
+          Invoice Date <p-sortIcon field="invoiceDate" />
+        </th>
+        <th id="fromName" pSortableColumn="fromName" class="min-w-10rem">
+          From Name
+          <p-sortIcon field="fromName" />
+        </th>
+        <th id="toName" pSortableColumn="toName" class="min-w-10rem">
+          To Name
+          <p-sortIcon field="toName" />
+        </th>
+        <th id="totalAmount" pSortableColumn="totalAmount" class="min-w-10rem">
+          Total Amount
+          <p-sortIcon field="totalAmount" />
+        </th>
+        <th id="action" class="min-w-10rem">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-invoice>
+      <tr>
+        <td class="min-w-10rem">{{ invoice.id }}</td>
+        <td class="min-w-10rem">
+          {{ invoice.invoiceDate | date : 'dd/MM/YYYY' }}
+        </td>
+        <td class="min-w-10rem">{{ invoice.fromName }}</td>
+        <td class="min-w-10rem">{{ invoice.toName }}</td>
+        <td class="min-w-10rem">{{ invoice.totalAmount }}</td>
+        <td class="min-w-10rem">
+          <p-button
+            icon="pi pi-eye"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="viewInvoice(invoice)"
+          />
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            severity="warn"
+            (onClick)="editInvoice(invoice)"
+            [rounded]="true"
+            [outlined]="true"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            (onClick)="confirm($event, invoice)"
+            [rounded]="true"
+            [outlined]="true"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-confirmDialog>
+    <ng-template #message let-message>
+      <div
+        class="flex flex-column align-items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700 p-4 mb-4 pb-0"
+      >
+        <i [class]="message.icon" class="text-7xl text-red-500"></i>
+        <p>{{ message.message }}</p>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</div>

@@ -1,0 +1,62 @@
+/* Global Styles for the Invoice Form */
+.invoice-card {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.form-section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #4b4b4b;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  color: #333;
+}
+
+.field textarea {
+  min-height: 100px;
+}
+
+.field .p-inputtext {
+  width: 100%;
+}
+
+.form-footer {
+  display: flex;
+  margin-top: 2rem;
+  gap: 1rem;
+
+  button {
+    flex: 0.2;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.disabled {
+  opacity: 1;
+  background: var(--inputtext-disabled-background);
+  color: var(--inputtext-disabled-color);
+}
+
+.min-h-5rem {
+  min-height: 5rem;
+}
+
+label {
+  font-weight: 600;
+  color: #333;
+}

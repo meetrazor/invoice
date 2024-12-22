@@ -1,0 +1,21 @@
+.translate-x-0 {
+  transform: translateX(0);
+}
+
+.-translate-x-full {
+  transform: translateX(-100%);
+}
+
+/* Header sticky behavior */
+.lg\:sticky {
+  position: sticky;
+}
+
+.lg\:top-0 {
+  top: 0;
+}
+
+.main-content-page {
+  height: calc(100% - 120px) !important;
+  overflow: auto;
+}
